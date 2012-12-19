@@ -53,6 +53,16 @@ describe VoteCreatedJob, '#perform' do
       VoteConfirmationEmailJob.should have_received(:enqueue).with(vote)
     end
 
+    it 'enqueues a VoteNotificationEmailJob' do
+      vote = build_stubbed(:vote)
+      Vote.stubs(find_by_id: vote)
+      VoteNotificationEmailJob.stubs(:enqueue)
+
+      VoteCreatedJob.new(vote.id).perform
+
+      VoteNotificationEmailJob.should have_received(:enqueue).with(vote)
+    end
+
     it 'configures Yammer' do
       voter = build_stubbed(:user)
       vote = build_stubbed(:vote, voter: voter)

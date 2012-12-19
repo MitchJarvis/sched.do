@@ -10,6 +10,7 @@ class VoteCreatedJob < Struct.new(:vote_id)
     if vote
       create_activity_message
       send_vote_confirmation_email
+      send_vote_notification_email
     end
   end
 
@@ -35,6 +36,10 @@ class VoteCreatedJob < Struct.new(:vote_id)
 
   def send_vote_confirmation_email
     VoteConfirmationEmailJob.enqueue(vote)
+  end
+
+  def send_vote_notification_email
+    VoteNotificationEmailJob.enqueue(vote)
   end
 
   def event

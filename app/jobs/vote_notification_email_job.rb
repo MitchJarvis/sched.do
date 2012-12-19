@@ -1,4 +1,4 @@
-class VoteConfirmationEmailJob < Struct.new(:vote_id)
+class VoteNotificationEmailJob < Struct.new(:vote_id)
   include ActsAsVoteEmailDelayedJob
 
   def self.enqueue(vote)
@@ -11,13 +11,13 @@ class VoteConfirmationEmailJob < Struct.new(:vote_id)
 
   def perform
     perform_email_job do
-      send_confirmation_email
+      send_notification_email
     end
   end
 
   private
 
-  def send_confirmation_email
-    UserMailer.vote_confirmation(vote).deliver
+  def send_notification_email
+    UserMailer.vote_notification(vote).deliver
   end
 end
