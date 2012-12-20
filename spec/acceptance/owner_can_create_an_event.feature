@@ -3,7 +3,9 @@ Feature: Owner can create an event
   Scenario: Owner creates event
     Given I am signed in
     When I create an event named "Clown party" with a suggestion of "lunch"
+    And I invite several invitees on the invitation page
     Then I should see an event named "Clown party" with a suggestion of "lunch"
+    And I should see several invitees in the list of invitees
     And my network should see an activity message announcing the event
 
   @javascript
@@ -52,7 +54,7 @@ Feature: Owner can create an event
     When I try to create an event with invalid data
     Then I should see multiple suggestions
 
-  Scenario: Owner trys to create an event without a date or a title
+  Scenario: Owner tries to create an event without a date or title
     Given I am signed in
     And I visit the new event page
     When I press "Create event"
