@@ -27,7 +27,7 @@ describe YammerUser, '.find_or_create' do
     }.should change(User, :count).by(1)
   end
 
-  it 'sets the right attributes for the new user' do
+  it 'sets the correct attributes for the new user' do
     auth = {
       access_token: 'ASF444',
       yammer_staging: false,
@@ -53,5 +53,18 @@ describe YammerUser, '.find_or_create' do
     YammerUser.new(auth).find_or_create
 
     User.any_instance.should have_received(:associate_guest_invitations)
+  end
+
+  it 'calls associate_guest_invitations' do
+    User.any_instance.stubs(:fetch_yammer_user_data)
+    auth = {
+      access_token: 'PUH98h',
+      yammer_staging: false,
+      yammer_user_id: 123321
+    }
+
+    YammerUser.new(auth).find_or_create
+
+    User.any_instance.should have_received(:fetch_yammer_user_data)
   end
 end

@@ -9,6 +9,7 @@ class YammerUser
     find_or_create_user
     set_user_access_token
     associate_guest_invitations
+    refresh_yammer_user_data
     @user
   end
 
@@ -24,7 +25,6 @@ class YammerUser
 
   def create_user_with_auth
     @user = User.new(auth)
-    @user.fetch_yammer_user_data
   end
 
   def auth
@@ -41,5 +41,9 @@ class YammerUser
 
   def associate_guest_invitations
     @user.associate_guest_invitations
+  end
+
+  def refresh_yammer_user_data
+    @user.fetch_yammer_user_data
   end
 end
